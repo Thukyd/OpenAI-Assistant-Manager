@@ -1,11 +1,11 @@
-
 import fs from 'fs'; // Node.js file system module for file operations 
 import client from './openai_client'; // Import the initialized OpenAI client
 
 /**
  * Uploads a file to OpenAI and returns the file ID.
  * @param {string} file_path - Path to the file to be uploaded.
- * @returns A promise that resolves with the file ID of the uploaded file.
+ * @returns {Promise<string>} A promise that resolves with the file ID of the uploaded file.
+ * @throws {Error} An error if the file cannot be uploaded.
  */
 export async function upload_file(file_path: string): Promise<string> {
   console.log(`Attempting to upload file: ${file_path}`);
@@ -13,7 +13,7 @@ export async function upload_file(file_path: string): Promise<string> {
   try {
     const response = await client.files.create({
       file: fs.createReadStream(file_path),
-      purpose: "assistants",
+      purpose: "fine-tune", // TODO: check if this is the right purpose
     });
 
     const fileId = response.id; // Extract the file ID from the response

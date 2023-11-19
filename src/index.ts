@@ -1,11 +1,11 @@
 
-import initialize_assistant from "./openai/initial_assistant"; './openai/initial_assistant';
+import initializeAssistant from "./openai/initial_assistant";
 
 async function main() {
 
     // either fetch the existing assistant or create a new one
     try {
-        const assistant = await initialize_assistant();
+        const assistant = await initializeAssistant();
         console.log("Assistant initialized:", assistant);
     } catch (error) {
         console.error("Failed to initialize assistant:", error);
