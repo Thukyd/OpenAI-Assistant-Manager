@@ -1,2 +1,14 @@
 # OpenAI-Assistant-RDDR2-Poker
-An OpenAI-powered assistant for Red Dead Redemption 2, designed to analyze poker game screenshots and provide gameplay advice. A tool for learning and improving poker decision-making skills within the game.
+
+## Project Overview
+This project develops an OpenAI Assistant to help players learn poker in Red Dead Redemption 2. It uses AI to analyze screenshots from the game and provides feedback on the poker gameplay.
+
+## How It Works
+1. **Capture:** Player takes a screenshot of their poker hand in the game.
+2. **Upload:** The screenshot is uploaded to the assistant.
+3. **Analysis:** The AI evaluates the image, identifying cards and game elements.
+4. **Advice:** The assistant offers suggestions based on the current poker hand.
+5. **Learn:** Aimed at improving poker decision-making skills within the game.
+
+## Contributions
+Contributions from those with interest in gaming, AI, or software development are welcome. The project benefits from diverse perspectives and skills in enhancing its functionality and user experience.
