@@ -1,6 +1,6 @@
 
 import fs from 'fs'; // Node.js file system module for file operations 
-import client  from './openai_client'; // Import the initialized OpenAI client
+import client from './openai_client'; // Import the initialized OpenAI client
 
 /**
  * Uploads a file to OpenAI and returns the file ID.

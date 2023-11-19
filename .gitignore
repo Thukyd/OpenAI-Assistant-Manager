@@ -27,3 +27,6 @@ Thumbs.db
 
 # Environment files
 .env
+
+# Conifguaration files
+config.json
