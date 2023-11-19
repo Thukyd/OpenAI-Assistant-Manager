@@ -1,0 +1,29 @@
+#VSC
+*.code-workspace
+
+# Dependency directories
+node_modules/
+
+# TypeScript compiled output
+dist/
+out/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# IDE/Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env

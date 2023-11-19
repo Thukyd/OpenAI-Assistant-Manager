@@ -1,0 +1,23 @@
+{
+  "name": "openai-assistant-rddr2-poker",
+  "version": "1.0.0",
+  "description": "An OpenAI-powered assistant for Red Dead Redemption 2, designed to analyze poker game screenshots and provide gameplay advice. A tool for learning and improving poker decision-making skills within the game.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thukyd/OpenAI-Assistant-RDDR2-Poker.git"
+  },
+  "author": "Thukyd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Thukyd/OpenAI-Assistant-RDDR2-Poker/issues"
+  },
+  "homepage": "https://github.com/Thukyd/OpenAI-Assistant-RDDR2-Poker#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "openai": "^4.19.0"
+  }
+}
