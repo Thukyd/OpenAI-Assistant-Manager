@@ -2,18 +2,37 @@ import client from './openai_client'; // Import the initialized OpenAI client
 import fs from 'fs/promises'; // File System module with promise support
 import path from 'path';
 
+const configPath = path.join(__dirname, '../config.json'); // Path to the config file
+
+
 /**
- * Types for configuration and assistant structures for better type checking.
+ * TODO: Add JSDoc comments
+ * TODO: Give the handover the setup descriptions as name, instructions, model, tools etc. as param from index.ts
+ * TODO: Add functionality to check if the assistant is still up to date. If not it should be handled in a update assistant module function.
  */
+
+// Define a type for the local assistant configuration
 type AssistantConfig = {
   assistantId?: string;
+  name?: string | null;
+  instructions?: string | null;
+  model?: string | null;
+  tools?: AssistantTool[] | null;
 };
 
+// Define a type for the assistant's tool configuration
+type AssistantTool = {
+  type: string;
+};
+
+// Define a type for the assistant object
 type Assistant = {
   id: string;
+  name?: string | null;
+  instructions?: string | null;
+  model?: string | null;
+  tools?: AssistantTool[] | null;
 };
-
-const configPath = path.join(__dirname, '../config.json'); // Path to the config file
 
 /**
  * Reads and parses the configuration file.
@@ -40,33 +59,58 @@ async function writeConfig(configData: AssistantConfig): Promise<void> {
 }
 
 /**
- * Initializes the assistant by checking for an existing config or creating a new assistant.
- * @returns {Promise<string>} The assistant ID.
- * @throws Will throw an error if the assistant cannot be initialized.
+ * Initializes the assistant by checking for an existing configuration or creating a new assistant.
+ * 
+ * This function performs the following steps:
+ * 1. Tries to read an existing configuration file. If successful, it uses the stored assistantId.
+ * 2. If the configuration file does not exist or cannot be read (e.g., the file is missing or corrupted),
+ *    a new assistant is created using the OpenAI API, and its full configuration is written to the config.json file.
+ * 3. If the configuration file exists but does not contain an assistantId (indicating a previous initialization was incomplete),
+ *    a new assistant is created. However, only the assistantId is updated in the existing configuration to preserve other settings.
+ * 
+ * @returns {Promise<string>} The assistant ID. Returns the ID of either the newly created assistant or the one found in the existing configuration.
+ * @throws {Error} Throws an error if the assistant cannot be initialized, or if there is a failure in reading or writing the configuration file.
  */
 async function initializeAssistant(): Promise<string> {
   let config: AssistantConfig;
 
   try {
+    // Attempt to read the existing config
     config = await readConfig();
   } catch (error) {
-    // Config file does not exist or can't be read, so we'll create a new assistant.
-    console.log("Config file does not exist. Creating a new assistant...");
+    // If config file doesn't exist or can't be read, create a new assistant
+    console.log("Config file does not exist or can't be read. Creating a new assistant...");
     const assistant = await createAssistant();
-    await writeConfig({ assistantId: assistant.id });
+
+    // Write the complete configuration for the new assistant
+    const configData: AssistantConfig = {
+      assistantId: assistant.id,
+      name: assistant.name,
+      instructions: assistant.instructions,
+      model: assistant.model,
+      tools: assistant.tools,
+    };
+
+    await writeConfig(configData);
     return assistant.id;
   }
 
   if (!config.assistantId) {
+    // If assistantId is not found in the config, create a new assistant
     console.log("Assistant ID not found in config. Creating a new assistant...");
     const assistant = await createAssistant();
-    await writeConfig({ ...config, assistantId: assistant.id });
+
+    // Update the existing config with the new assistantId
+    config = { ...config, assistantId: assistant.id };
+    await writeConfig(config);
     return assistant.id;
   }
 
+  // If assistantId is found, use the existing assistant
   console.log("Assistant ID found in config. Using existing assistant...");
   return config.assistantId;
 }
+
 
 /**
  * Creates a new assistant using the OpenAI API.
@@ -77,16 +121,30 @@ async function createAssistant(): Promise<Assistant> {
   try {
     const assistant = await client.beta.assistants.create({
       name: "Red Dead Redemption 2 - Poker Assistant",
-      instructions: "You are an AI assistant that analyzes screenshots from Red Dead Redemption 2 poker games. Your task is to evaluate the current game situation from these images, offering strategic advice on poker hands and betting tactics. You educate players on evaluating cards and understanding game dynamics, guiding them towards making smart decisions. Your goal is to progressively teach players so they can eventually master poker strategy on their own.",
+      instructions: "You are an AI assistant that analyzes screenshots from Red Dead Redemption 2 poker games...",
       model: "gpt-4-1106-preview",
       tools: [{ "type": "code_interpreter" }],
     });
     console.log("Assistant created with ID:", assistant.id);
+
+    // New code: Create a config object with all necessary details
+    const configData: AssistantConfig = {
+      assistantId: assistant.id,
+      name: assistant.name,
+      instructions: assistant.instructions,
+      model: assistant.model,
+      tools: assistant.tools,
+    };
+
+    // Save the full configuration to the config file
+    await writeConfig(configData);
+
     return assistant;
   } catch (error) {
     console.error("Error creating assistant:", error);
     throw error;
   }
 }
+
 
 export default initializeAssistant;
