@@ -1,45 +1,20 @@
 import client from './openai_client'; // Import the initialized OpenAI client
 import fs from 'fs/promises'; // File System module with promise support
+import { Assistant } from 'openai/resources/beta/assistants/assistants';
 import path from 'path';
 
 const configPath = path.join(__dirname, '../config.json'); // Path to the config file
 
 
-/**
- * TODO: Add JSDoc comments
- * TODO: Give the handover the setup descriptions as name, instructions, model, tools etc. as param from index.ts
- * TODO: Add functionality to check if the assistant is still up to date. If not it should be handled in a update assistant module function.
- */
-
-// Define a type for the local assistant configuration
-type AssistantConfig = {
-  assistantId?: string;
-  name?: string | null;
-  instructions?: string | null;
-  model?: string | null;
-  tools?: AssistantTool[] | null;
-};
-
-// Define a type for the assistant's tool configuration
-type AssistantTool = {
-  type: string;
-};
-
-// Define a type for the assistant object
-type Assistant = {
-  id: string;
-  name?: string | null;
-  instructions?: string | null;
-  model?: string | null;
-  tools?: AssistantTool[] | null;
-};
+// TODO: Add the update assistant function here
+// TODO: The Configs should acutally come fro index.ts and not directly in the create assistant function
 
 /**
  * Reads and parses the configuration file.
- * @returns {Promise<AssistantConfig>} Parsed configuration object from the file.
+ * @returns {Promise<Assistant>} Parsed configuration object from the file.
  * @throws Will throw an error if the file cannot be read or parsed.
  */
-async function readConfig(): Promise<AssistantConfig> {
+async function readConfig(): Promise<Assistant> {
   try {
     const configFile = await fs.readFile(configPath, 'utf-8');
     return JSON.parse(configFile);
@@ -51,64 +26,39 @@ async function readConfig(): Promise<AssistantConfig> {
 
 /**
  * Writes the assistant configuration to a file.
- * @param {AssistantConfig} configData - The configuration data to write to the file.
+ * @param {Assistant} configData - The configuration data to write to the file.
  * @returns {Promise<void>}
  */
-async function writeConfig(configData: AssistantConfig): Promise<void> {
+async function writeConfig(configData: Assistant): Promise<void> {
   await fs.writeFile(configPath, JSON.stringify(configData, null, 2));
 }
 
 /**
- * Initializes the assistant by checking for an existing configuration or creating a new assistant.
- * 
- * This function performs the following steps:
- * 1. Tries to read an existing configuration file. If successful, it uses the stored assistantId.
- * 2. If the configuration file does not exist or cannot be read (e.g., the file is missing or corrupted),
- *    a new assistant is created using the OpenAI API, and its full configuration is written to the config.json file.
- * 3. If the configuration file exists but does not contain an assistantId (indicating a previous initialization was incomplete),
- *    a new assistant is created. However, only the assistantId is updated in the existing configuration to preserve other settings.
- * 
- * @returns {Promise<string>} The assistant ID. Returns the ID of either the newly created assistant or the one found in the existing configuration.
- * @throws {Error} Throws an error if the assistant cannot be initialized, or if there is a failure in reading or writing the configuration file.
+ * Initializes the assistant by reading the existing configuration from a file, or
+ * creating a new assistant if the configuration file does not exist or cannot be read.
+ * It also checks if the existing assistant is up to date and handles any necessary updates.
+ *
+ * @returns {Promise<Assistant>} The initialized assistant object.
+ * @throws Will throw an error if the assistant cannot be initialized.
  */
-async function initializeAssistant(): Promise<string> {
-  let config: AssistantConfig;
+async function initializeAssistant(): Promise<Assistant> {
+  let assistant: Assistant;
 
+  // Try to read local configs from file the configuration file
   try {
-    // Attempt to read the existing config
-    config = await readConfig();
-  } catch (error) {
+    assistant = await readConfig();
+    // TODO: add here the check if the assistant is still up to date
+  }
+  catch (error) {
     // If config file doesn't exist or can't be read, create a new assistant
-    console.log("Config file does not exist or can't be read. Creating a new assistant...");
-    const assistant = await createAssistant();
+    console.log("\nConfig file does not exist or can't be read. Creating a new assistant...\n\n");
+    assistant = await createAssistant();
 
-    // Write the complete configuration for the new assistant
-    const configData: AssistantConfig = {
-      assistantId: assistant.id,
-      name: assistant.name,
-      instructions: assistant.instructions,
-      model: assistant.model,
-      tools: assistant.tools,
-    };
-
-    await writeConfig(configData);
-    return assistant.id;
+    // Persist assistant data in a config file
+    await writeConfig(assistant);
   }
 
-  if (!config.assistantId) {
-    // If assistantId is not found in the config, create a new assistant
-    console.log("Assistant ID not found in config. Creating a new assistant...");
-    const assistant = await createAssistant();
-
-    // Update the existing config with the new assistantId
-    config = { ...config, assistantId: assistant.id };
-    await writeConfig(config);
-    return assistant.id;
-  }
-
-  // If assistantId is found, use the existing assistant
-  console.log("Assistant ID found in config. Using existing assistant...");
-  return config.assistantId;
+  return assistant;
 }
 
 
@@ -127,17 +77,8 @@ async function createAssistant(): Promise<Assistant> {
     });
     console.log("Assistant created with ID:", assistant.id);
 
-    // New code: Create a config object with all necessary details
-    const configData: AssistantConfig = {
-      assistantId: assistant.id,
-      name: assistant.name,
-      instructions: assistant.instructions,
-      model: assistant.model,
-      tools: assistant.tools,
-    };
-
     // Save the full configuration to the config file
-    await writeConfig(configData);
+    await writeConfig(assistant);
 
     return assistant;
   } catch (error) {
