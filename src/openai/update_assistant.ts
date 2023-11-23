@@ -5,6 +5,8 @@ import path from 'path';
 
 const configPath = path.join(__dirname, '../config.json'); // Path to the config file
 
+// TODO: OBSOLETED BY THE INITIAL ASSISTANT FUNCTION => Still work in prorgess
+
 
 async function hasAssistantConfigDifferences(assistantId:string,localConfig:any): Promise<boolean> {
     // send request to openai to get the assistant config
