@@ -2,16 +2,17 @@
 
 ## Project Overview
 
-This project follows two purposes:
+The project uses the OpenAI Assisant framework with two purposes:
 
-1. Create a backend for the OpenAI Assistant functionalities to manage the assistant via code. This can be further used to create a web interface.
-3. Create an OpenAI-powered assistant for Red Dead Redemption 2, designed to analyze poker game screenshots and provide gameplay advice. A tool for learning and improving poker decision-making skills within the game.
+1. Create a backend for the OpenAI Assistant functionalities to manage the assistant via code. The assistant is created using the OpenAI API and the configs are stored locally as a JSON file. The base setup can be used as a starting point to develop custom web interface.
+
+2. Create an OpenAI-powered assistant for Red Dead Redemption 2, designed to analyze poker game screenshots and provide gameplay advice. A tool for learning and improving poker decision-making skills within the game. This is more an exemple project to demonstrate the assistant functionalities.
 
 ## Status
 
-[x] Create the backend to manage the assistant (create, store locally, update assistant)
-[ ] Enable file upload to assistant
-[ ] Create Assistant to analyze screenshots from the game
+- [x] ~~Create the backend to manage the assistant (create, store locally, update assistant)~~
+- [ ] Enable file upload to assistant
+- [ ] Create Assistant to analyze screenshots from the game
 
 ## What does the backend do?
 
