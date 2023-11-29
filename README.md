@@ -1,11 +1,24 @@
-# OpenAI-Assistant-RDR2-Poker
-Still work in progress...
+# OpenAI-Assistant-Manager
 
 ## Project Overview
 
-This project develops an OpenAI Assistant to help players learn poker in Red Dead Redemption 2. It uses AI to analyze screenshots from the game and provides feedback on the poker gameplay.
+This project follows two purposes:
 
-## How It Works
+1. Create a backend for the OpenAI Assistant functionalities to manage the assistant via code. This can be further used to create a web interface.
+2. Create a an OpenAi Assistant to help players learn poker in Red Dead Redemption 2. It uses AI to analyze screenshots from the game and provides feedback on the poker gameplay.
+
+## Status
+[x] Create the backend to manage the assistant (create, store locally, update assistant)
+[ ] Enable file upload to assistant
+[ ] Create Assistant to analyze screenshots from the game
+
+## What does the backend do?
+
+1. **Create an assistant:** The assistant is created using the OpenAI API.
+2. **Local assistant:** The assistant configs (id) is saved locally as a JSON file.
+3. **Assistant management:** The assistant is managed via code, using the OpenAI API.
+
+## How does the RDR2 Poker Assistant work?
 
 1. **Capture:** Player takes a screenshot of their poker hand in the game.
 2. **Upload:** The screenshot is uploaded to the assistant.

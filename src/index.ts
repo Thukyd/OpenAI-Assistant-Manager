@@ -1,5 +1,5 @@
 
-import initializeAssistant from "./openai/initial_assistant";
+import initializeAssistant from "./openai/assistant_management";
 import { AssistantCreateParams } from 'openai/resources/beta/assistants/assistants';
 
 const assistantConfigs: AssistantCreateParams = {
@@ -13,21 +13,17 @@ const assistantConfigs: AssistantCreateParams = {
 };
 
 
+// TODO: support file uploads for assistant creation
+
 async function main() {
 
     // either fetch the existing assistant or create a new one
     try {
         const assistant = await initializeAssistant(assistantConfigs);
-        console.log("Assistant initialized:", assistant);
+        console.log("Assistant:", assistant);
     } catch (error) {
         console.error("Failed to initialize assistant:", error);
     }
-
-    // TODO: if initial assistant exists, check if the description / model / etc. is still up to date
-        // Maybe you should do that in a separate function. You will still go with the initial assistant, but you will update the description / model / etc. in a different function is
-        // which is called in the initial assistant function
-    // probably smart to do that in the same initial assistant script as well in the same function
-    // there should be logs for each change
 
 }
 
