@@ -1,4 +1,4 @@
-# OpenAI-Assistant-RDDR2-Poker
+# OpenAI-Assistant-RDR2-Poker
 
 ## Project Overview
 
