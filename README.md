@@ -1,4 +1,4 @@
-# OpenAI-Assistant-Manager
+# OpenAI-Assistant-Managegment
 
 ## Project Overview
 
