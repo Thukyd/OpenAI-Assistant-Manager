@@ -5,7 +5,7 @@
 This project follows two purposes:
 
 1. Create a backend for the OpenAI Assistant functionalities to manage the assistant via code. This can be further used to create a web interface.
-2. Create a an OpenAi Assistant to help players learn poker in Red Dead Redemption 2. It uses AI to analyze screenshots from the game and provides feedback on the poker gameplay.
+3. Create an OpenAI-powered assistant for Red Dead Redemption 2, designed to analyze poker game screenshots and provide gameplay advice. A tool for learning and improving poker decision-making skills within the game.
 
 ## Status
 
