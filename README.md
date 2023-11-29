@@ -1,4 +1,5 @@
 # OpenAI-Assistant-RDR2-Poker
+Still work in progress...
 
 ## Project Overview
 
