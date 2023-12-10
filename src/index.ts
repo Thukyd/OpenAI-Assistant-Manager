@@ -25,6 +25,8 @@ async function main() {
         console.error("Failed to initialize assistant:", error);
     }
 
+    // run the assistant
+
 }
 
 main();
